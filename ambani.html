@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spend Mukesh Ambani's Money</title>
+  <style>
+    body {
+      font-family: 'Courier Prime', monospace;
+      background: #ffffff;
+      color: #000000;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+    h1 {
+      font-size: 28px;
+    }
+    .budget {
+      font-size: 22px;
+      margin: 20px 0;
+    }
+    .item-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .item {
+      border: 1px solid #000;
+      border-radius: 16px;
+      padding: 16px;
+      margin: 10px;
+      width: 200px;
+      background: #f9f9f9;
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    }
+    .item img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+    .item h3 {
+      font-size: 16px;
+      margin: 10px 0 5px;
+    }
+    .item p {
+      margin: 5px 0;
+    }
+    .buy-btn {
+      padding: 5px 10px;
+      margin-top: 5px;
+      cursor: pointer;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+    .link {
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    .count {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+    .reset-btn {
+      padding: 10px 20px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      margin: 20px auto;
+      display: block;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    @media screen and (max-width: 600px) {
+      .item {
+        width: 90%;
+      }
+      .item img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Spend Mukesh Ambani's Money</h1>
+  <div class="budget">Remaining Budget: <span id="budget">₹8,64,00,00,00,000</span></div>
+  <button class="reset-btn" onclick="resetGame()">Reset</button>
+  <div class="item-list" id="itemList"></div>
+
+  <script>
+    const formatter = new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 0
+    });
+
+    const originalBudget = 8640000000000;
+    let budget = originalBudget;
+
+    const items = [
+      { name: "Reynolds Ball Pen", cost: 10, image: "https://i.imgur.com/xmWQBl2.png" },
+      { name: "Vada Pav", cost: 25, image: "https://i.imgur.com/WxNU1vL.png" },
+      { name: "Bitcoin", cost: 9000000, image: "https://i.imgur.com/qXqeQsw.png", link: "https://coinswitch.co/coins/bitcoin", background: "#6B91FC" },
+      { name: "Nike Dunk Low", cost: 9995, image: "https://i.imgur.com/V0dDWe5.png" },
+      { name: "Manyavar Sherwani", cost: 25000, image: "https://i.imgur.com/yfGJvOB.png" },
+      { name: "10g Gold", cost: 95000, image: "https://i.imgur.com/Jy7V3vh.png" },
+      { name: "iPhone 15 Pro Max", cost: 160000, image: "https://i.imgur.com/0LwIfvV.png" },
+      { name: "Triumph Scrambler 400 X", cost: 267207, image: "https://i.imgur.com/L7zGUSs.png" },
+      { name: "BMW 3 Series", cost: 4500000, image: "https://i.imgur.com/XoRACcc.png" },
+      { name: "Patek Philippe Nautilus", cost: 10000000, image: "https://i.imgur.com/W9MdFep.png" },
+      { name: "3 BHK in Bangalore", cost: 30000000, image: "https://i.imgur.com/d1WUpvT.png" },
+      { name: "Gulfstream G500", cost: 4247328046, image: "https://i.imgur.com/7X7Pr4z.png" }
+    ];
+
+    const itemList = document.getElementById('itemList');
+    const budgetDisplay = document.getElementById('budget');
+
+    function renderItems() {
+      itemList.innerHTML = '';
+      items.forEach(item => {
+        item.count = item.count || 0;
+        const div = document.createElement('div');
+        div.className = 'item';
+        if (item.name === "Bitcoin" && item.background) {
+          div.style.backgroundColor = item.background;
+        }
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}" />
+          <h3>${item.name}</h3>
+          <p>${formatter.format(item.cost)}</p>
+          <p class="count">Purchased: <span id="count-${item.name}">${item.count}</span></p>
+          <button class="buy-btn">Buy</button>
+          ${item.link ? `<div class='link'><a href="${item.link}" target="_blank">Buy on CoinSwitch</a></div>` : ''}
+        `;
+
+        const btn = div.querySelector('button');
+        btn.addEventListener('click', () => {
+          if (budget >= item.cost) {
+            budget -= item.cost;
+            item.count++;
+            budgetDisplay.textContent = formatter.format(budget);
+            document.getElementById(`count-${item.name}`).textContent = item.count;
+          }
+        });
+
+        itemList.appendChild(div);
+      });
+    }
+
+    function resetGame() {
+      budget = originalBudget;
+      budgetDisplay.textContent = formatter.format(budget);
+      items.forEach(item => item.count = 0);
+      renderItems();
+    }
+
+    renderItems();
+  </script>
+</body>
+</html>
