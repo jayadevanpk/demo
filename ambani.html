@@ -82,14 +82,19 @@
       cursor: pointer;
     }
     @media screen and (max-width: 600px) {
-      .item {
-        width: 90%;
-      }
-      .item img {
-        width: 80px;
-        height: 80px;
-      }
-    }
+  .item-list {
+    flex-direction: column;
+    align-items: center;
+  }
+  .item {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+  .item img {
+    width: 100px;
+    height: 100px;
+  }
+}
   </style>
 </head>
 <body>
